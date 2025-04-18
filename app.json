@@ -36,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "eda71a2e-800e-40d7-b626-01c7f90314e3"
+      }
+    },
+    "owner": "anjola101"
   }
 }
