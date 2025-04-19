@@ -79,6 +79,15 @@ export default function Index() {
   const [activeButton, setActiveButton] = useState<string | null>(null);
   const [showTag, setShowTag] = useState(false);
   const [jiggleAnim] = useState(new Animated.Value(0));
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [randomMusic, setRandomMusic] = useState<string>("Loading...");
+  const musicData = [
+    "Song: Blinding Lights - Artist: The Weeknd",
+    "Song: Levitating - Artist: Dua Lipa",
+    "Song: Peaches - Artist: Justin Bieber",
+    "Song: Save Your Tears - Artist: The Weeknd",
+    "Song: Stay - Artist: The Kid LAROI & Justin Bieber",
+  ];
 
   // Animations
   const fadeAnim = new Animated.Value(0);
@@ -148,6 +157,14 @@ export default function Index() {
     }
   }, [conversionData]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * musicData.length);
+      setRandomMusic(musicData[randomIndex]);
+    }, 3000); // Change music data every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
+
   const handleButtonPressIn = () => {
     Animated.spring(buttonScale, {
       toValue: 0.9,
@@ -165,6 +182,7 @@ export default function Index() {
 
   const handleButtonClick = (buttonId: string) => {
     setActiveButton(buttonId);
+    setTimeout(() => setActiveButton(null), 200); // Reset the active button after 200ms
   };
 
   return (
@@ -222,11 +240,11 @@ export default function Index() {
           </TouchableOpacity>
         </View>
 
-        {/* If not logged In  */}
-        <View style={!loggedIn && !showTab ? [styles.loginButtons, styles.visible] : [styles.hidden]}>
+          {/* If not logged In  */}
+          <View style={!loggedIn && !showTab ? [styles.loginButtons, styles.visible] : [styles.hidden]}>
           {loading && <ActivityIndicator size="large" color="#00ffcc" />}
           <TouchableOpacity
-            onPress={() => (window.location.href = "/spotify/login") } // Use env variable
+            onPress={() => (window.location.href = "https://player-backend-qz31.onrender.com/spotify/login") } // Use env variable
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
           >
@@ -237,7 +255,7 @@ export default function Index() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => (window.location.href = "/youtube/auth")} // Use env variable
+            onPress={() => (window.location.href = "https://player-backend-qz31.onrender.com/youtube/auth")} // Use env variable
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
           >
@@ -272,6 +290,57 @@ export default function Index() {
             <View>{dsp ? <Form dsp={dsp} checkStatus={checkStatus} callback1={setConversionData}  /> : null}</View>
           </View>
         )}
+
+        {/* About Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>About</Text>
+          <Text style={styles.sectionText}>
+            Welcome to Playlist Converter! This platform allows you to seamlessly convert playlists between Spotify and YouTube. Enjoy a smooth and intuitive experience.
+          </Text>
+        </View>
+
+        {/* Future Features Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Future Features</Text>
+          <Text style={styles.futureFeatureText}>- AI-based playlist recommendations</Text>
+          <Text style={styles.futureFeatureText}>- Collaborative playlist editing</Text>
+          <Text style={styles.futureFeatureText}>- Integration with Apple Music</Text>
+          <Text style={styles.futureFeatureText}>- Offline playlist conversion</Text>
+        </View>
+
+        {/* Random Music Data */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Random Music Data</Text>
+          <Text style={styles.randomMusic}>{randomMusic}</Text>
+        </View>
+
+        {/* Dropdown Example */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>RATE YOUR EXPERIENCE</Text>
+          <TouchableOpacity
+            style={styles.dropdown}
+            onPress={() => setSelectedOption(selectedOption === "Option 1" ? null : "Option 1")}
+          >
+            <Text style={styles.dropdownText}>OK</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.dropdown}
+            onPress={() => setSelectedOption(selectedOption === "Option 2" ? null : "Option 2")}
+          >
+            <Text style={styles.dropdownText}>GOOD</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.dropdown}
+            onPress={() => setSelectedOption(selectedOption === "Option 3" ? null : "Option 3")}
+          >
+            <Text style={styles.dropdownText}>EXCELLENT</Text>
+          </TouchableOpacity>
+          {selectedOption && (
+            <Text style={styles.selectedOption}>You selected: {selectedOption}</Text>
+          )}
+        </View>
+
+      
       </ScrollView>
     </View>
   );
@@ -288,11 +357,12 @@ const darkStyles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28, // Larger font size for the main title
     color: "#00ffcc",
     textAlign: "center",
     fontWeight: "bold",
     marginBottom: 20,
+    fontFamily: "Impact",
   },
   loginButtons: {
     alignItems: "center",
@@ -313,9 +383,10 @@ const darkStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonText: {
-    color: "#00ffcc",
     fontSize: 16,
+    color: "#00ffcc",
     textAlign: "center",
+    fontFamily: "Helvetica",
   },
   hidden: {
     display: "none",
@@ -387,6 +458,56 @@ const darkStyles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "bold",
   },
+  section: {
+    marginVertical: 20,
+    padding: 15,
+    backgroundColor: "#111",
+    borderRadius: 10,
+  },
+  sectionTitle: {
+    fontSize: 22, // Larger font size for titles
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#00ffcc",
+    fontFamily: "Arial",
+  },
+  sectionText: {
+    fontSize: 14, // Smaller font size for body text
+    color: "#00ffcc",
+    lineHeight: 20,
+    fontFamily: "Verdana",
+  },
+  futureFeatureText: {
+    fontSize: 16, // Medium font size for feature items
+    color: "#007BFF",
+    marginBottom: 5,
+    fontFamily: "Courier New",
+  },
+  randomMusic: {
+    fontSize: 18, // Slightly larger font for emphasis
+    fontStyle: "italic",
+    color: "#FF4500",
+    fontFamily: "Georgia",
+  },
+  dropdown: {
+    backgroundColor: "#333",
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 5,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  dropdownText: {
+    fontSize: 16,
+    color: "#00ffcc",
+    fontFamily: "Tahoma",
+  },
+  selectedOption: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#00ffcc",
+    fontFamily: "Verdana",
+  },
 });
 
 const lightStyles = StyleSheet.create({
@@ -400,11 +521,12 @@ const lightStyles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28, // Larger font size for the main title
     color: "#000000",
     textAlign: "center",
     fontWeight: "bold",
     marginBottom: 20,
+    fontFamily: "Impact",
   },
   loginButtons: {
     alignItems: "center",
@@ -425,9 +547,10 @@ const lightStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonText: {
-    color: "#000000",
     fontSize: 16,
+    color: "#ffffff",
     textAlign: "center",
+    fontFamily: "Helvetica",
   },
   hidden: {
     display: "none",
@@ -498,5 +621,57 @@ const lightStyles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 12,
     fontWeight: "bold",
+  },
+  section: {
+    marginVertical: 20,
+    padding: 15,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  sectionTitle: {
+    fontSize: 22, // Larger font size for titles
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
+    fontFamily: "Arial",
+  },
+  sectionText: {
+    fontSize: 14, // Smaller font size for body text
+    color: "#555",
+    lineHeight: 20,
+    fontFamily: "Verdana",
+  },
+  futureFeatureText: {
+    fontSize: 16, // Medium font size for feature items
+    color: "#007BFF",
+    marginBottom: 5,
+    fontFamily: "Courier New",
+  },
+  randomMusic: {
+    fontSize: 18, // Slightly larger font for emphasis
+    fontStyle: "italic",
+    color: "#FF4500",
+    fontFamily: "Georgia",
+  },
+  dropdown: {
+    backgroundColor: "#e0e0e0",
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 5,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  dropdownText: {
+    fontSize: 16,
+    color: "#333",
+    fontFamily: "Tahoma",
+  },
+  selectedOption: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#007BFF",
+    fontFamily: "Verdana",
   },
 });

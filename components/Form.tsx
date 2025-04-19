@@ -200,7 +200,7 @@ export default function Form({ dsp, checkStatus,  callback1 }: Props) {
   const handleSubmitSF = async () => {
     setIsSubmitting(true); // Show loader
     try {
-      axios.get("http://localhost:8000/player/convertSpotifyToYoutube", {
+      axios.get("https://player-backend-qz31.onrender.com/player/convertSpotifyToYoutube", {
         params: {
           param: formData["Spotify Playlist Link"] || null,
           existing_param: formData["Existing Youtube Playlist Link"] || null,
@@ -227,7 +227,7 @@ export default function Form({ dsp, checkStatus,  callback1 }: Props) {
   const handleSubmitYT = async () => {
     setIsSubmitting(true); // Show loader
     try {
-      axios.get("http://localhost:8000/player/convertYoutubeToSpotify", {
+      axios.get("https://player-backend-qz31.onrender.com/player/convertYoutubeToSpotify", {
         params: {
           param: formData["Youtube Playlist Link"] || null,
           existing_param: formData["Existing Spotify Playlist Link"] || null,
