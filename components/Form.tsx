@@ -182,21 +182,6 @@ export default function Form({ dsp, checkStatus,  callback1 }: Props) {
     if (step > 0) setStep(step - 1);
   };
 
-  // const handleButtonPressIn = () => {
-  //   Animated.spring(buttonScale, {
-  //     toValue: 0.9,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
-
-  // const handleButtonPressOut = () => {
-  //   Animated.spring(buttonScale, {
-  //     toValue: 1,
-  //     friction: 3,
-  //     useNativeDriver: true,
-  //   }).start();
-  // };
-
   const handleSubmitSF = async () => {
     setIsSubmitting(true); // Show loader
     try {
@@ -279,11 +264,11 @@ export default function Form({ dsp, checkStatus,  callback1 }: Props) {
       console.error("Network Error or No Response Received!");
       if (error.message.includes("Network") || error.message.includes("CORS")) {
         if (source === "YT") {
-          deleteCookie("playeRCookieYT");
-          deleteCookie("tokenTimeYT");
+          // deleteCookie("playeRCookieYT");
+          // deleteCookie("tokenTimeYT");
         } else {
-          deleteCookie("playeRCookieSF");
-          deleteCookie("tokenTimeSF");
+          // deleteCookie("playeRCookieSF");
+          // deleteCookie("tokenTimeSF");
         }
         checkStatus();
         if (Platform.OS !== "web") {
@@ -344,6 +329,7 @@ export default function Form({ dsp, checkStatus,  callback1 }: Props) {
             style={styles.picker}
             onValueChange={handleChange}
           >
+          <Picker.Item label="Choose" value="" />
             <Picker.Item label="Yes" value="Public" />
             <Picker.Item label="No" value="Private" />
           </Picker>
