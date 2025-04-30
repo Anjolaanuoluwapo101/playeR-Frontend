@@ -244,8 +244,8 @@ export default function Index() {
           <View style={!loggedIn && !showTab ? [styles.loginButtons, styles.visible] : [styles.hidden]}>
           {loading && <ActivityIndicator size="large" color="#00ffcc" />}
           <TouchableOpacity
-            // onPress={() => (window.location.href = "https://player-backend-qz31.onrender.com/spotify/login") } // Use env variable
-            onPress={() => (window.location.href = "http://localhost:8001/spotify/login") } // Use env variable
+            onPress={() => (window.location.href = "https://player-backend-qz31.onrender.com/spotify/login") } // Use env variable
+            // onPress={() => (window.location.href = "http://localhost:8001/spotify/login") } // Use env variable
             
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
@@ -257,7 +257,7 @@ export default function Index() {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => (window.location.href = "http://localhost:8001/youtube/auth")} // Use env variable
+            onPress={() => (window.location.href = "https://player-backend-qz31.onrender.com/youtube/auth")} // Use env variable
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
           >
